@@ -43,26 +43,24 @@ const questions = [
   },
 ];
 
-inquirer
-  .prompt(questions)
-  .then((answers) => {
-    console.log(answers);
-  })
-  .catch((error) => {
-    if (error.isTtyError) {
-      // Prompt couldn't be rendered in the current environment
-      console.log(error);
-    } else {
-      // Something else went wrong
-      console.log("done");
-    }
-  });
-
 // // TODO: Create a function to write README file
-// function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, data, function (err) {
+    if (err) {
+      console.log(err);
+    }
+    console.log("Successfully created README.md!");
+  });
+}
 
 // // TODO: Create a function to initialize app
-// function init() {}
+function init() {
+  inquirer.prompt(questions).then((answers) => {
+    const readmeFileContent = generateMarkdown(answers);
+
+    writeToFile("README.md", readmeFileContent);
+  });
+}
 
 // // Function call to initialize app
-// init();
+init();
